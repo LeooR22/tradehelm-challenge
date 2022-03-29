@@ -14,7 +14,7 @@ const options = {
 let notifier = new AWN(options);
 
 const init = () => {
-  return JSON.parse(localStorage.getItem("list") || []);
+  return JSON.parse(localStorage.getItem("list")) || [];
 };
 
 export const SupermarketApp = () => {
