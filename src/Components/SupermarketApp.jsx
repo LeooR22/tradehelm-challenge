@@ -1,11 +1,20 @@
 import { useEffect, useReducer } from "react";
 import "../styles.css";
 import { SupermarketList } from "./SupermarketList";
-import { SupermarketAdd } from "./SupermarketAdd";
+import { SupermarketAdd, ProductProps } from "./SupermarketAdd";
 import { listReducer } from "../reducers/listReducer";
 
+import AWN from "awesome-notifications";
+
+const options = {
+  durations: {
+    global: 1500,
+  },
+};
+let notifier = new AWN(options);
+
 const init = () => {
-  return JSON.parse(localStorage.getItem("list")) || [];
+  return JSON.parse(localStorage.getItem("list") || []);
 };
 
 export const SupermarketApp = () => {
@@ -16,24 +25,32 @@ export const SupermarketApp = () => {
   }, [list]);
 
   const handleAdd = (newProduct) => {
-    dispatch({
-      type: "add",
-      payload: newProduct,
-    });
+    setTimeout(() => {
+      dispatch({
+        type: "add",
+        payload: newProduct,
+      });
+      notifier.success(`${newProduct.product} has been added`);
+    }, 500);
   };
 
-  const handleToggle = (idProduct) => {
-    dispatch({
-      type: "toggle",
-      payload: idProduct,
-    });
+  const handleToggle = (product) => {
+    setTimeout(() => {
+      dispatch({
+        type: "toggle",
+        payload: product.id,
+      });
+    }, 200);
   };
 
-  const handleDelete = (idProduct) => {
-    dispatch({
-      type: "delete",
-      payload: idProduct,
-    });
+  const handleDelete = (product) => {
+    setTimeout(() => {
+      dispatch({
+        type: "delete",
+        payload: product.id,
+      });
+      notifier.warning(`${product.product} has been deleted`);
+    }, 500);
   };
 
   return (
